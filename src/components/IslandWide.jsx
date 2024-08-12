@@ -5,30 +5,38 @@ const Islandwide = () => {
   const [chart1Selection, setChart1Selection] = useState("");
   const [chart2Selection, setChart2Selection] = useState("");
 
-  const handleChart2SelectionChange = (e) => {
+  const handleChart1SelectionChange = (e) => {
     setChart1Selection(e.target.value);
   };
-  const handleChart1SelectionChange = (e) => {
+  const handleChart2SelectionChange = (e) => {
     setChart2Selection(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmitChart1 = (e) => {
     e.preventDefault();
-    switch (chart2Selection) {
-      case "21":
-        // Logic for Chart 2 Resale Price vs Floor Area (sqm)
-        console.log("Selected Chart 2: Resale Price vs Floor Area (sqm)");
-        break;
-      case "22":
-        // Logic for Chart 2 Resale Price vs Remaining Lease
-        console.log("Selected Chart 2: Resale Price vs Remaining Lease");
-        break;
-      case "23":
-        // Logic for Chart 2 Resale Price vs Storey Range
-        console.log("Selected Chart 2: Resale Price vs Storey Range");
-        break;
-      default:
-        console.log("No valid selection made");
+
+    if (chart1Selection === "11") {
+      console.log("Chart 1: Selected 1");
+    } else if (chart1Selection === "12") {
+      console.log("Chart 1: Selected 2");
+    } else if (chart1Selection === "13") {
+      console.log("Chart 1: Selected 3");
+    } else {
+      console.log("No valid selection made");
+    }
+  };
+
+  const handleSubmitChart2 = (e) => {
+    e.preventDefault();
+
+    if (chart2Selection === "21") {
+      console.log("Chart 2: Selected 1");
+    } else if (chart2Selection === "22") {
+      console.log("Chart 2: Selected 2");
+    } else if (chart2Selection === "23") {
+      console.log("Chart 2: Selected 3");
+    } else {
+      console.log("No valid selection made");
     }
   };
 
@@ -52,15 +60,15 @@ const Islandwide = () => {
                     <option value="" disabled>
                       Please Select Analysis
                     </option>
-                    <option value="21">Resale Price vs Floor Area (sqm)</option>
-                    <option value="22">Resale Price vs Remaining Lease</option>
-                    <option value="23">Resale Price vs Storey Range</option>
+                    <option value="11">Select 1</option>
+                    <option value="12">Select 2</option>
+                    <option value="13">Select 3</option>
                   </Form.Control>
                 </Form.Group>
                 <Button
                   variant="primary"
                   size="sm"
-                  type="submit"
+                  onClick={handleSubmitChart1}
                   className="mt-2"
                   style={{ fontSize: ".9em" }}
                 >
@@ -88,7 +96,7 @@ const Islandwide = () => {
                 <Button
                   variant="primary"
                   size="sm"
-                  onClick={handleSubmit}
+                  onClick={handleSubmitChart2}
                   className="mt-2"
                   style={{ fontSize: ".9em" }}
                 >
