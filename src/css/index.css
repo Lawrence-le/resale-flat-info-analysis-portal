@@ -1,0 +1,155 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fjalla+One&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
+
+body {
+  margin: 0;
+  padding: 0;
+
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  background-color: #f8f9fa;
+  background-color: #343a40;
+  background-color: #edf2fa;
+  padding-top: 4rem;
+}
+
+p {
+  font-weight: 300;
+  margin: 0;
+  font-size: 0.8em;
+}
+
+.navbar {
+  width: 100%;
+  border-bottom: 1px solid;
+  background-color: #d5dee6;
+}
+
+.navbar {
+  width: 100%;
+  background-color: white;
+  padding: 10px 20px;
+  border-bottom: 2px solid #b0bec5;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0d6efd;
+}
+
+.nav-link {
+  font-weight: 400;
+  font-size: 0.9rem;
+  color: #0d6efd;
+}
+.main-content {
+  padding-bottom: 2em;
+}
+
+.footer {
+  width: 100%;
+  background-color: #343a40;
+  color: white;
+  text-align: center;
+  padding: 1em 0;
+  bottom: 0;
+}
+
+.no-decoration {
+  text-decoration: none;
+  color: inherit; /* Makes the link text color inherit from its parent */
+}
+
+.title {
+  background-color: #f0f0f0;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.hpCompTitle {
+  font-size: 1em;
+}
+.text1 {
+  font-size: 1em;
+  font-weight: bold;
+}
+
+.g-4 {
+  gap: 1rem;
+}
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 20vh;
+}
+.custom-spinner {
+  width: 4rem;
+  height: 4rem;
+  border-width: 0.5em;
+  color: #0d6efd;
+}
+.custom-select {
+  width: 200px;
+}
+
+.custom-town-item {
+  height: 2.5em;
+}
+
+.townHeight {
+  height: 2.5em;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+}
+.custom-font-size-town {
+  font-size: 0.9em;
+}
+.townAggText {
+  font-size: 1.3em;
+}
+
+.price-cards-container .col {
+  margin-right: 1rem;
+}
+
+.price-cards-container .col:last-child {
+  margin-right: 0;
+}
+
+.price-subtitle {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.paraSpace {
+  margin-bottom: 0.5rem;
+}
+
+.colorTitle {
+  font-size: 1.1rem;
+  color: #0d6efd;
+}
+
+.price-detail {
+  color: #0d6efd;
+  font-weight: bold;
+  font-size: 1.4em;
+}
+.price-card {
+  font-size: 0.9em;
+}
