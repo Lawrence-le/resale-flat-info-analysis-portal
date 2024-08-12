@@ -3,13 +3,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Row, Col } from "react-bootstrap";
 import { getHdb } from "../services/Api";
 import { useEffect, useState } from "react";
-import { parse, format, min, max } from "date-fns"; // Assuming you mean `date.js` refers to `date-fns`
+import { parse, format, min, max } from "date-fns";
 import BasicExample from "./Spinner";
 
-// Options for the chart
 export const townChartOptions = {
-  // title: "No. of units transacted by Towns (Feb 2024 to Aug 2024)",
-  // backgroundColor: "#E4E4E4",
   chartArea: { left: 200, top: 5, bottom: 60 },
   hAxis: {
     title: "Total Transactions",
@@ -75,24 +72,20 @@ export function TownChart() {
           `No. of units transacted by Towns (${minMonth} to ${maxMonth})`
         );
 
-        // Count transactions by town
         const townCounts = countTowns(records);
 
-        // Sort towns by alphabetical order
         const sortedByKey = Object.entries(townCounts).sort(([a], [b]) =>
           a.localeCompare(b)
         );
 
-        // Convert sorted array back to object
         const sortedTownCountsByKey = Object.fromEntries(sortedByKey);
 
-        // Prepare chart data
         const townCountsData = [
           ["Town", "Transactions"],
           ...Object.entries(sortedTownCountsByKey).map(([town, count]) => [
             town,
             Number(count),
-          ]), // Ensure count is a number
+          ]),
         ];
 
         console.log("Town Counts:", sortedTownCountsByKey);
@@ -102,7 +95,7 @@ export function TownChart() {
       } catch (error) {
         console.error(error.message);
       } finally {
-        setLoading(false); // Set loading to false after data fetching is complete
+        setLoading(false);
       }
     };
 
