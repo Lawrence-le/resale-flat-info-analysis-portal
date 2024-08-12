@@ -12,7 +12,7 @@ function NaviBar() {
     <Navbar className="navbar">
       <Container>
         <Navbar.Brand as={Link} to="/">
-          ReFLAT
+          <strong> Re.Flat </strong>
         </Navbar.Brand>
         <Nav>
           <Nav.Link as={Link} to="/Town">

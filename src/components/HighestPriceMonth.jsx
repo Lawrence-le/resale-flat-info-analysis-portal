@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getHdb } from "../services/Api";
 import { Container, Row, Col } from "react-bootstrap";
-import VariantsExample from "./Spinner"; // Import your spinner component
+import VariantsExample from "./Spinner";
 
 function HighestPriceMonth() {
   const [highestTransaction, setHighestTransaction] = useState(null);
@@ -66,7 +66,7 @@ function HighestPriceMonth() {
     setHighestTransaction(highest);
   };
   if (loading) {
-    return <VariantsExample />; // Replace loading text with the spinner
+    return <VariantsExample />;
   }
   return (
     <Container>

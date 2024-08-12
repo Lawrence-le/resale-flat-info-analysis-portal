@@ -8,7 +8,7 @@ const Footer = () => {
       <Container>
         <Row>
           <Col className="text-center mt-3 ">
-            <p style={{ margin: 0 }}>© 2024 ReFLAT. All Rights Reserved.</p>
+            <p style={{ margin: 0 }}>© 2024 Re.Flat All Rights Reserved.</p>
           </Col>
         </Row>
 

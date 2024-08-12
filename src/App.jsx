@@ -7,7 +7,7 @@ import Footer from "./components/Footer";
 import Town from "./components/Town";
 import IslandWide from "./components/IslandWide";
 import HighestPriceMonth from "./components/HighestPriceMonth";
-import TownChart from "./components/TownChart";
+import ChartHomeUnits from "./components/ChartHomeUnits";
 
 function HomePage() {
   return (
@@ -25,7 +25,7 @@ function HomePage() {
 
           <Col>
             <div className="d-flex flex-column flex-fill shadow border-primary p-3 bg-white rounded">
-              <TownChart />
+              <ChartHomeUnits />
             </div>
           </Col>
         </Row>
