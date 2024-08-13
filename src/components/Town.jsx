@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Container, Row, Col, Button, Form, ListGroup } from "react-bootstrap";
-import { getHdb } from "../services/Api";
+import { getHdb, getHdbFiltered } from "../services/Api";
 import {
   addSelection,
   fetchExistingData,
@@ -132,6 +132,7 @@ function Town() {
     }
     try {
       await deleteAllRecords();
+      await getHdbFiltered;
 
       const result = await addSelection(selectedTown, selectedFlatType);
       if (result) {

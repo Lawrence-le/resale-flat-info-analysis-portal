@@ -16,10 +16,10 @@ function NaviBar() {
         </Navbar.Brand>
         <Nav>
           <Nav.Link as={Link} to="/Town">
-            Town
+            <strong>Town</strong>
           </Nav.Link>
           <Nav.Link as={Link} to="/IslandWide">
-            Island-wide
+            <strong>Island-wide</strong>
           </Nav.Link>
         </Nav>
       </Container>

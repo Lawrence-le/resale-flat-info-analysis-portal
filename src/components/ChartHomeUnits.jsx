@@ -1,5 +1,5 @@
-import { Chart } from "react-google-charts";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Chart } from "react-google-charts";
 import { Row, Col } from "react-bootstrap";
 import { getHdb } from "../services/Api";
 import { useEffect, useState } from "react";
@@ -10,9 +10,7 @@ import BasicExample from "./Spinner";
 export function ChartHome() {
   const [data, setData] = useState([["Town", "Transactions"]]);
   const [loading, setLoading] = useState(true);
-  const [chartTitle, setChartTitle] = useState(
-    "No. of units transacted by Towns"
-  );
+  const [chartTitle, setChartTitle] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
