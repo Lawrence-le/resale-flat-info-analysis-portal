@@ -5,7 +5,7 @@ meta {
 }
 
 get {
-  url: https://data.gov.sg/api/action/datastore_search?resource_id=d_8b84c4ee58e3cfc0ece0d773c8ca6abc&sort=month desc&q={"town":"BISHAN","flat_type":"3 ROOM", "month":"2024"}
+  url: https://data.gov.sg/api/action/datastore_search?resource_id=d_8b84c4ee58e3cfc0ece0d773c8ca6abc&sort=month desc&q={"month":"2024-07"}&limit=12000
   body: none
   auth: none
 }
@@ -13,5 +13,7 @@ get {
 params:query {
   resource_id: d_8b84c4ee58e3cfc0ece0d773c8ca6abc
   sort: month desc
-  q: {"town":"BISHAN","flat_type":"3 ROOM", "month":"2024"}
+  q: {"month":"2024-07"}
+  limit: 12000
+  ~q: {"town":"BISHAN","flat_type":"3 ROOM", "month":"2024"}
 }

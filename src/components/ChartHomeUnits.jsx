@@ -1,61 +1,37 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Chart } from "react-google-charts";
 import { Row, Col } from "react-bootstrap";
-import { getHdb } from "../services/Api";
 import { useEffect, useState } from "react";
-import { parse, format, min, max } from "date-fns";
 import { chartHomeUnitsOptions } from "./ChartOptions";
 import BasicExample from "./Spinner";
+import { getHdbFilteredPreviousMonth } from "../services/Api";
 
-export function ChartHome() {
-  const [data, setData] = useState([["Town", "Transactions"]]);
+export function ChartHomeUnits({ getPreviousMonth }) {
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [chartTitle, setChartTitle] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const records = await getHdb();
+        const previousMonthString = getPreviousMonth();
+        const records = await getHdbFilteredPreviousMonth(previousMonthString);
+        console.log(`Total Records: ${records.length}`);
+        setData(records);
 
-        const months = records.map((record) =>
-          parse(record.month, "yyyy-MM", new Date())
-        );
-        const minMonth = format(min(months), "MMM yyyy");
-        const maxMonth = format(max(months), "MMM yyyy");
-
-        setChartTitle(
-          `No. of units transacted by Towns (${minMonth} to ${maxMonth})`
-        );
-
-        const townCounts = countTowns(records);
-
-        const sortedByKey = Object.entries(townCounts).sort(([a], [b]) =>
-          a.localeCompare(b)
-        );
-
-        const sortedTownCountsByKey = Object.fromEntries(sortedByKey);
-
-        const townCountsData = [
-          ["Town", "Transactions"],
-          ...Object.entries(sortedTownCountsByKey).map(([town, count]) => [
-            town,
-            Number(count),
-          ]),
-        ];
-
-        console.log("Town Counts:", sortedTownCountsByKey);
-        console.log("Town Count Data:", townCountsData);
-
-        setData(townCountsData);
+        const formattedMonth = new Date(
+          `${previousMonthString}-01`
+        ).toLocaleString("default", { month: "short", year: "numeric" });
+        setChartTitle(`No. of units transacted by Towns (${formattedMonth})`);
       } catch (error) {
-        console.error(error.message);
+        console.error("Error fetching data:", error.message);
       } finally {
         setLoading(false);
       }
     };
 
     fetchData();
-  }, []);
+  }, [getPreviousMonth]);
 
   function countTowns(records) {
     const townCountMap = {};
@@ -72,6 +48,23 @@ export function ChartHome() {
 
     return townCountMap;
   }
+
+  const townCounts = countTowns(data);
+
+  const sortedByKey = Object.entries(townCounts).sort(([a], [b]) =>
+    a.localeCompare(b)
+  );
+
+  const sortedTownCountsByKey = Object.fromEntries(sortedByKey);
+
+  const chartData = [
+    ["Town", "Transactions"],
+    ...Object.entries(sortedTownCountsByKey).map(([town, count]) => [
+      town,
+      Number(count),
+    ]),
+  ];
+
   if (loading) {
     return <BasicExample />;
   }
@@ -87,11 +80,11 @@ export function ChartHome() {
         chartType="BarChart"
         width="100%"
         height="600px"
-        data={data}
+        data={chartData}
         options={chartHomeUnitsOptions}
       />
     </div>
   );
 }
 
-export default ChartHome;
+export default ChartHomeUnits;

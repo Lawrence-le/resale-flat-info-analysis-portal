@@ -1,5 +1,3 @@
-// Add query from API
-
 export async function get() {
   const datasetId = "d_8b84c4ee58e3cfc0ece0d773c8ca6abc";
   const url = `https://data.gov.sg/api/action/datastore_search?resource_id=${datasetId}&limit=10`;
@@ -38,7 +36,6 @@ export async function getHdb() {
     }
 
     const json = await response.json();
-    // console.log("getHdb Data:", json.result.records);
     return json.result.records;
   } catch (error) {
     console.error(error.message);
@@ -46,27 +43,26 @@ export async function getHdb() {
   }
 }
 
-export async function getHdbFiltered() {
-  const totalRecords = await get();
-  console.log("Total Records: ", totalRecords);
-  const offSet = totalRecords - 14000;
-  // console.log(offSet);
-
+//Api.jsx
+export async function getHdbFilteredPreviousMonth(previousMonthString) {
   const datasetId = "d_8b84c4ee58e3cfc0ece0d773c8ca6abc";
+  const url = `https://data.gov.sg/api/action/datastore_search?resource_id=${datasetId}&sort=month desc&q={"month":"${previousMonthString}"}&limit=12000`;
 
-  const payload = { town: "BISHAN", flat_type: "5 ROOM" };
-
-  const url = `https://data.gov.sg/api/action/datastore_search?resource_id=${datasetId}&offset=${offSet}&limit=14000&filter={${payload}}`;
+  // console.log("Previous Month:", previousMonthString);
+  // console.log("API URL:", url);
 
   try {
-    const response = await fetch(url, {});
+    const response = await fetch(url, {
+      method: "GET",
+    });
+
     if (!response.ok) {
       throw new Error(`Response status: ${response.status}`);
     }
 
-    const json = await response.json();
-    console.log("getHdbFiltered:", json.result.records);
-    return json.result.records;
+    const data = await response.json();
+    console.log("GET Response Data:", data);
+    return data.result.records;
   } catch (error) {
     console.error(error.message);
     return [];

@@ -3,7 +3,7 @@ export const chartHomeUnitsOptions = {
   hAxis: {
     title: "Total Transactions",
     minValue: 0,
-    maxValue: 1200,
+    maxValue: 300,
     titleTextStyle: {
       fontSize: 14,
       bold: true,
@@ -14,12 +14,9 @@ export const chartHomeUnitsOptions = {
     },
     ticks: [
       { v: 0, f: "0" },
+      { v: 100, f: "100" },
       { v: 200, f: "200" },
-      { v: 400, f: "400" },
-      { v: 600, f: "600" },
-      { v: 800, f: "800" },
-      { v: 1000, f: "1000" },
-      { v: 1200, f: "1200" },
+      { v: 300, f: "300" },
     ],
   },
   vAxis: {
