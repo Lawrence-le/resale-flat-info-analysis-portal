@@ -5,8 +5,7 @@ const headers = {
 };
 
 export const addSelection = async (townKey, flatTypeKey) => {
-  const airtable_town_url =
-    "https://api.airtable.com/v0/appwCopPSRNE5cJQe/Table%201";
+  const url = "https://api.airtable.com/v0/appwCopPSRNE5cJQe/Table%201";
   const payload = {
     fields: {
       town: townKey,
@@ -14,11 +13,8 @@ export const addSelection = async (townKey, flatTypeKey) => {
     },
   };
 
-  console.log("formData:", { townKey, flatTypeKey });
-  console.log("payload:", payload);
-
   try {
-    const response = await fetch(airtable_town_url, {
+    const response = await fetch(url, {
       method: "POST",
       body: JSON.stringify(payload),
       headers,
@@ -29,7 +25,6 @@ export const addSelection = async (townKey, flatTypeKey) => {
 
     const json = await response.json();
     const result = { id: json.id, ...json.fields };
-    // console.log("result:", result);
     return result;
   } catch (error) {
     console.error("Error:", error.message);
@@ -37,11 +32,10 @@ export const addSelection = async (townKey, flatTypeKey) => {
 };
 
 export const fetchExistingData = async () => {
-  const airtable_town_url =
-    "https://api.airtable.com/v0/appwCopPSRNE5cJQe/Table%201";
+  const url = "https://api.airtable.com/v0/appwCopPSRNE5cJQe/Table%201";
 
   try {
-    const response = await fetch(airtable_town_url, {
+    const response = await fetch(url, {
       method: "GET",
       headers,
     });
@@ -63,13 +57,12 @@ export const fetchExistingData = async () => {
 };
 
 export const deleteAllRecords = async () => {
-  const airtable_town_url =
-    "https://api.airtable.com/v0/appwCopPSRNE5cJQe/Table%201";
+  const url = "https://api.airtable.com/v0/appwCopPSRNE5cJQe/Table%201";
 
   try {
     const existingData = await fetchExistingData();
     for (const record of existingData) {
-      const response = await fetch(`${airtable_town_url}/${record.id}`, {
+      const response = await fetch(`${url}/${record.id}`, {
         method: "DELETE",
         headers,
       });
@@ -77,7 +70,87 @@ export const deleteAllRecords = async () => {
         throw new Error(`Failed to delete record with ID ${record.id}`);
       }
     }
-    // console.log("Record deleted successfully");
+  } catch (error) {
+    console.error("Error deleting records:", error.message);
+  }
+};
+
+//* For Favourites
+
+export const addFavourites = async () => {
+  const url = "https://api.airtable.com/v0/appFKfNxO9GBOaz7B/Table%201";
+
+  try {
+    const existingData = await fetchExistingData();
+
+    if (!existingData || existingData.length === 0) {
+      throw new Error("No existing data found to map the payload.");
+    }
+    const { town, flatType } = existingData[0];
+
+    const payload = {
+      fields: {
+        town,
+        flatType,
+      },
+    };
+
+    console.log("Mapped Payload:", payload);
+
+    const response = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify(payload),
+      headers,
+    });
+
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+
+    const json = await response.json();
+    const result = { id: json.id, ...json.fields };
+    return result;
+  } catch (error) {
+    console.error("Error:", error.message);
+  }
+};
+export const fetchFavouriteTowns = async () => {
+  const url = "https://api.airtable.com/v0/appFKfNxO9GBOaz7B/Table%201";
+
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      headers,
+    });
+
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+
+    const json = await response.json();
+    return json.records.map((record) => ({
+      id: record.id,
+      ...record.fields,
+    }));
+  } catch (error) {
+    console.error("Error fetching favorite towns:", error.message);
+    return [];
+  }
+};
+
+export const deleteAllFavourites = async () => {
+  try {
+    const url = "https://api.airtable.com/v0/appFKfNxO9GBOaz7B/Table%201";
+    const existingData = await fetchFavouriteTowns();
+    for (const record of existingData) {
+      const response = await fetch(`${url}/${record.id}`, {
+        method: "DELETE",
+        headers,
+      });
+      if (!response.ok) {
+        throw new Error(`Failed to delete record with ID ${record.id}`);
+      }
+    }
   } catch (error) {
     console.error("Error deleting records:", error.message);
   }

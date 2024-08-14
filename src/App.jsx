@@ -1,5 +1,3 @@
-// App.jsx
-
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -36,7 +34,7 @@ function App() {
     const fetchData = async () => {
       try {
         const records = await getHdbFilteredPreviousMonth(previousMonthString);
-        console.log(`Total Records: ${records.length}`);
+        // console.log(`Total Records: ${records.length}`);
         setData(records);
       } catch (error) {
         console.error("Error fetching data:", error.message);

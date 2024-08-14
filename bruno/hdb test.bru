@@ -1,0 +1,21 @@
+meta {
+  name: hdb test
+  type: http
+  seq: 10
+}
+
+get {
+  url: https://data.gov.sg/api/action/datastore_search?resource_id=d_8b84c4ee58e3cfc0ece0d773c8ca6abc&sort=month desc&limit=12000&q={"town":"BISHAN","flat_type":"3 ROOM","month":"2024"}
+  body: none
+  auth: none
+}
+
+params:query {
+  resource_id: d_8b84c4ee58e3cfc0ece0d773c8ca6abc
+  sort: month desc
+  limit: 12000
+  q: {"town":"BISHAN","flat_type":"3 ROOM","month":"2024"}
+  ~q: {"month":"2024-07"}
+  ~q: {"month":"2024"}
+  ~filters: {"town":"BISHAN","flat_type":"3 ROOM"}
+}

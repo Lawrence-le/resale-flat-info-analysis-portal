@@ -1,24 +1,15 @@
 meta {
-  name: town-api-POST
+  name: fav-api-GET
   type: http
-  seq: 6
+  seq: 11
 }
 
-post {
+get {
   url: https://api.airtable.com/v0/appwCopPSRNE5cJQe/Table%201
-  body: json
+  body: none
   auth: none
 }
 
 headers {
   Authorization: {{process.env.VITE_AIR_TABLE_TOKEN}}
-}
-
-body:json {
-  {
-    "fields": {
-      "town": "Tampines",
-      "flatType": "10 Room"
-    }
-  }
 }

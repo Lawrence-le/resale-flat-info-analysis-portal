@@ -1,3 +1,5 @@
+import { format, parse } from "date-fns";
+
 const PriceCard = ({ data }) => {
   return (
     <div>
@@ -5,12 +7,15 @@ const PriceCard = ({ data }) => {
         <h5 className="price-detail">
           ${parseFloat(data.resale_price).toLocaleString()}
         </h5>
+
+        <p>
+          <strong>Month:</strong>{" "}
+          {format(new Date(data.month + "-01"), "MMM yyyy")}
+        </p>
         <p>
           <strong>Town:</strong> {data.town}
         </p>
-        <p>
-          <strong>Month:</strong> {data.month}
-        </p>
+
         <p className="paraSpace">
           <strong>Flat Type:</strong> {data.flat_type}
         </p>

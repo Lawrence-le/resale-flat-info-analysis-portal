@@ -15,10 +15,10 @@ function NaviBar() {
           <strong> Re.Flat </strong>
         </Navbar.Brand>
         <Nav>
-          <Nav.Link as={Link} to="/Town">
+          <Nav.Link as={Link} to="/town">
             <strong>Town</strong>
           </Nav.Link>
-          <Nav.Link as={Link} to="/IslandWide">
+          <Nav.Link as={Link} to="/islandWide">
             <strong>Island-wide</strong>
           </Nav.Link>
         </Nav>

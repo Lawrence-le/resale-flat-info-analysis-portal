@@ -1,0 +1,15 @@
+meta {
+  name: fav-api-DELETE
+  type: http
+  seq: 13
+}
+
+delete {
+  url: https://api.airtable.com/v0/appFKfNxO9GBOaz7B/Table%201
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: {{process.env.VITE_AIR_TABLE_TOKEN}}
+}
