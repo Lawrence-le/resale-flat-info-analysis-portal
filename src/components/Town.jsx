@@ -5,14 +5,16 @@ import {
   addSelection,
   fetchExistingData,
   deleteAllRecords,
-  addFavourites,
-  fetchFavouriteTowns,
-  deleteAllFavourites,
+  addBookmarks,
+  fetchBookmarkedTowns,
+  deleteAllBookmarks,
 } from "../services/AirTable";
 import { useEffect, useState } from "react";
 import TownAgg from "./TownAgg";
 import TownHighLowPrice from "./TownHighLowPrice";
 import { format } from "date-fns";
+import BookmarkAgg from "./BookmarkAgg";
+import BookmarkHighLowPrice from "./BookmarkHighLowPrice";
 
 const getYear = new Date().getFullYear();
 
@@ -24,20 +26,28 @@ function Town() {
   const [townFilter, setTownFilter] = useState([]);
   const [, setNoDataAvailable] = useState(false);
 
-  const [medianPrice, setMedianPrice] = useState(null);
-  const [meanPrice, setMeanPrice] = useState(null);
+  const [medianPrice, setMedianPrice] = useState(0);
+  const [meanPrice, setMeanPrice] = useState(0);
   const [unitCount, setUnitCount] = useState(0);
 
-  const [lowestPrice, setLowestPrice] = useState(null);
-  const [highestPrice, setHighestPrice] = useState(null);
+  const [lowestPrice, setLowestPrice] = useState(0);
+  const [highestPrice, setHighestPrice] = useState(0);
 
-  const [maxMonth, setMaxMonth] = useState(null);
-  const [minMonth, setMinMonth] = useState(null);
+  const [maxMonth, setMaxMonth] = useState("");
+  const [minMonth, setMinMonth] = useState("");
 
   const [loading, setLoading] = useState(false);
 
-  const [favourites, setFavourites] = useState([]);
-  const [selectedFavourite, setSelectedFavourite] = useState("");
+  const [unitCountBookmark, setUnitCountBookmark] = useState(0);
+  const [medianPriceBookmark, setMedianPriceBookmark] = useState(0);
+  const [meanPriceBookmark, setMeanPriceBookmark] = useState(0);
+  const [lowestPriceBookmark, setLowestPriceBookmark] = useState(0);
+  const [highestPriceBookmark, setHighestPriceBookmark] = useState(0);
+
+  const [bookmarks, setBookmarks] = useState([]);
+  const [selectedBookmarkId, setSelectedBookmarkId] = useState("");
+  const [selectedBookmarkTown, setSelectedBookmarkTown] = useState("");
+  const [selectedBookmarkFlatType, setSelectedBookmarkFlatType] = useState("");
 
   //* Get Unique Town Name for Selection
   useEffect(() => {
@@ -127,18 +137,18 @@ function Town() {
     setLowestPrice(lowestPriceRecord);
     setHighestPrice(highestPriceRecord);
   };
-
+  //* https://blog.stackademic.com/finding-the-median-of-an-array-in-javascript-82ff31b3f544
   const calculateMedian = (prices) => {
-    if (prices.length === 0) return null;
+    if (prices.length === 0) return;
     prices.sort((a, b) => a - b);
     const mid = Math.floor(prices.length / 2);
     return prices.length % 2 === 0
       ? (prices[mid - 1] + prices[mid]) / 2
       : prices[mid];
   };
-
+  //* https://www.explainthis.io/en/swe/find-average-in-an-array
   const calculateMean = (prices) => {
-    if (prices.length === 0) return null;
+    if (prices.length === 0) return;
     const sum = prices.reduce((acc, price) => acc + price, 0);
     return sum / prices.length;
   };
@@ -186,12 +196,13 @@ function Town() {
       console.error(error.message);
     }
   };
-  //* For Favourites
+  //! For Bookmarks
   useEffect(() => {
     const loadFavoriteTowns = async () => {
       try {
-        const fetchedFavourites = await fetchFavouriteTowns();
-        setFavourites(fetchedFavourites);
+        const fetchedBookmarks = await fetchBookmarkedTowns();
+        console.log("Fetched Bookmarks:", fetchedBookmarks); // Debugging: Log fetched bookmarks
+        setBookmarks(fetchedBookmarks); //? Set Bookmarks with data fetched.
       } catch (error) {
         console.error("Error fetching favorite towns:", error.message);
       }
@@ -200,46 +211,153 @@ function Town() {
     loadFavoriteTowns();
   }, []);
 
-  const handleSubmitFavourites = async (e) => {
-    e.preventDefault();
-    try {
-      const result = await addFavourites();
-      if (result) {
-        // Fetch updated favourites and set the state
-        const updatedFavourites = await fetchFavouriteTowns();
-        setFavourites(updatedFavourites);
-        alert("Favourite added successfully!");
-      }
-    } catch (error) {
-      console.error("Error adding favourite:", error.message);
-    }
-  };
+  useEffect(() => {
+    const fetchAndCalculateBookmark = async () => {
+      if (selectedBookmarkTown && selectedBookmarkFlatType) {
+        setLoading(true);
+        try {
+          const records = await getHdbFilteredTown(
+            selectedBookmarkTown,
+            selectedBookmarkFlatType,
+            getYear
+          );
 
-  const handleFavouriteChange = async (e) => {
-    const selectedValue = e.target.value;
-    setSelectedFavourite(selectedValue);
+          const months = records.map((record) => record.month);
+          const sortedMonths = months.sort((a, b) => new Date(a) - new Date(b));
 
-    if (selectedValue) {
-      console.log("Selected Favourite:", selectedValue);
-    }
-  };
+          const getMinMonth = sortedMonths[0];
+          const getMaxMonth = sortedMonths[sortedMonths.length - 1];
 
-  const handleEditFavourites = () => {
-    alert("Edit Favourites clicked");
-  };
+          setMinMonth(getMinMonth);
+          setMaxMonth(getMaxMonth);
 
-  const handleRemoveAllFavourites = async () => {
-    try {
-      const result = await deleteAllFavourites();
-      if (!result) {
-        const updatedFavourites = await fetchFavouriteTowns();
-        if (updatedFavourites.length === 0) {
-          setFavourites(updatedFavourites);
-          alert("All favourites removed successfully!");
+          calculateBookmarkStatistics(records);
+        } finally {
+          setLoading(false);
         }
       }
+    };
+    fetchAndCalculateBookmark();
+  }, [selectedBookmarkTown, selectedBookmarkFlatType]);
+
+  const calculateBookmarkStatistics = (filteredData) => {
+    if (filteredData.length === 0) return;
+
+    const resalePrices = filteredData.map((item) =>
+      parseFloat(item.resale_price)
+    );
+
+    const count = filteredData.length;
+    setUnitCountBookmark(count);
+    setMedianPriceBookmark(calculateMedian(resalePrices));
+    setMeanPriceBookmark(parseInt(calculateMean(resalePrices)));
+
+    const lowestPrice = Math.min(...resalePrices);
+    const highestPrice = Math.max(...resalePrices);
+
+    const lowestPriceRecord = filteredData.find(
+      (record) => parseFloat(record.resale_price) === lowestPrice
+    );
+    const highestPriceRecord = filteredData.find(
+      (record) => parseFloat(record.resale_price) === highestPrice
+    );
+
+    setLowestPriceBookmark(lowestPriceRecord);
+    setHighestPriceBookmark(highestPriceRecord);
+  };
+
+  const handleAddBookmarks = async (e) => {
+    e.preventDefault();
+    try {
+      const existingBookmarks = await fetchBookmarkedTowns();
+
+      const isBookmark = existingBookmarks.find(
+        (fav) =>
+          fav.town === townFilter[0]?.town &&
+          fav.flatType === townFilter[0]?.flatType
+      );
+
+      if (isBookmark) {
+        alert("This town and flat type is already in your Bookmarks.");
+        return;
+      }
+      const result = await addBookmarks();
+      if (result) {
+        const updatedBookmarks = await fetchBookmarkedTowns();
+        setBookmarks(updatedBookmarks);
+        alert("Bookmark added successfully!");
+      }
     } catch (error) {
-      console.error("Error removing all favourites:", error.message);
+      console.error("Error adding Bookmark:", error.message);
+    }
+  };
+
+  const handleEditBookmarks = async (e) => {
+    e.preventDefault();
+
+    alert("Please select a bookmark.");
+  };
+
+  const handleBookmarkSubmit = (e) => {
+    e.preventDefault();
+
+    console.log("Form Submitted");
+    console.log("Selected Bookmark ID:", selectedBookmarkId);
+    console.log("Selected Town:", selectedBookmarkTown);
+    console.log("Selected Flat Type:", selectedBookmarkFlatType);
+
+    if (!selectedBookmarkTown || !selectedBookmarkFlatType) {
+      alert("Please select a valid bookmark.");
+      return;
+    }
+
+    alert(
+      `Selected Bookmark:\nTown: ${selectedBookmarkTown}\nFlat Type: ${selectedBookmarkFlatType}`
+    );
+  };
+
+  const handleBookmarkChange = (e) => {
+    const selectedId = e.target.value; // Get the selected bookmark ID
+    setSelectedBookmarkId(selectedId);
+
+    // Find the bookmark object with the selected ID
+    const bookmark = bookmarks.find((b) => b.id === selectedId);
+
+    // Update states based on the found bookmark
+    if (bookmark) {
+      setSelectedBookmarkTown(bookmark.town);
+      setSelectedBookmarkFlatType(bookmark.flatType);
+    } else {
+      setSelectedBookmarkTown("");
+      setSelectedBookmarkFlatType("");
+    }
+  };
+
+  const handleRemoveAllBookmarks = async () => {
+    //* https://phppot.com/javascript/javascript-confirm/
+    if (
+      window.confirm(
+        "Are you sure you want to remove all bookmarks?\nThis action cannot be undone."
+      )
+    ) {
+      // action confirmed
+      console.log("Ok is clicked.");
+
+      try {
+        const result = await deleteAllBookmarks();
+        if (!result) {
+          const updatedBookmarks = await fetchBookmarkedTowns();
+          if (updatedBookmarks.length === 0) {
+            setBookmarks(updatedBookmarks);
+            alert("All bookmarks removed successfully!");
+          }
+        }
+      } catch (error) {
+        console.error("Error removing all bookmarks:", error.message);
+      }
+    } else {
+      // action cancelled
+      console.log("Cancel is clicked.");
     }
   };
 
@@ -338,32 +456,41 @@ function Town() {
               size="sm"
               className="mt-2"
               style={{ fontSize: ".9em" }}
-              onClick={handleSubmitFavourites}
+              onClick={handleAddBookmarks}
             >
-              Add to Favourites
+              Add to Bookmarks
             </Button>
           </div>
         </Col>
 
         <Col>
-          <h5 className="text1">Favourite Towns</h5>
-          <div className="border p-3">
-            <Form.Group controlId="flattype-select">
-              <Form.Control
-                as="select"
-                value={selectedFavourite}
-                onChange={handleFavouriteChange}
-                style={{ fontSize: ".9em" }}
-              >
-                <option value="" disabled>
-                  Select a Favourite
-                </option>
-                {favourites.map((item, index) => (
-                  <option key={index} value={item}>
-                    Town: {item.town} / Flat Type: {item.flatType}
+          <h5 className="text1">Bookmark</h5>
+          <Form className="border p-3 " onSubmit={handleBookmarkSubmit}>
+            <Form.Group controlId="Bookmark-select">
+              {bookmarks.length > 0 ? (
+                <Form.Control
+                  // as="select"
+                  // value={selectedBookmark}
+                  // onChange={(e) => setSelectedBookmark(e.target.value)}
+                  // style={{ fontSize: ".9em" }}
+
+                  as="select"
+                  value={selectedBookmarkId} // Value is now the selectedBookmarkId
+                  onChange={handleBookmarkChange}
+                  style={{ fontSize: ".9em" }}
+                >
+                  <option value="" disabled>
+                    Select a Bookmark
                   </option>
-                ))}
-              </Form.Control>
+                  {bookmarks.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      Town: {item.town} / Flat Type: {item.flatType}
+                    </option>
+                  ))}
+                </Form.Control>
+              ) : (
+                <Form.Text>No Bookmarks</Form.Text>
+              )}
             </Form.Group>
 
             <Button
@@ -372,6 +499,7 @@ function Town() {
               type="submit"
               className="mt-2 me-2"
               style={{ fontSize: ".9em" }}
+              // onClick={handleBookmarkChange}
             >
               Submit
             </Button>
@@ -381,7 +509,7 @@ function Town() {
               size="sm"
               className="mt-2"
               style={{ fontSize: ".9em" }}
-              onClick={handleEditFavourites}
+              onClick={handleEditBookmarks}
             >
               Edit
             </Button>
@@ -391,11 +519,11 @@ function Town() {
               size="sm"
               className="mt-2 ms-2"
               style={{ fontSize: ".9em" }}
-              onClick={handleRemoveAllFavourites}
+              onClick={handleRemoveAllBookmarks}
             >
-              Remove All Favourites
+              Remove All Bookmarks
             </Button>
-          </div>
+          </Form>
         </Col>
       </Row>
 
@@ -422,6 +550,7 @@ function Town() {
                 <h5 className="colorTitle">Lowest vs Highest Price</h5>
                 <div className="d-flex flex-column flex-fill shadow border-primary p-3 bg-white rounded townAggText">
                   <TownHighLowPrice
+                    townFilter={townFilter}
                     lowestPrice={lowestPrice}
                     highestPrice={highestPrice}
                     loading={loading}
@@ -433,18 +562,19 @@ function Town() {
         </Col>
 
         <Col className="d-flex flex-column">
-          <h5 className="text1 mt-5 mb-3">Favourite Town Analysis</h5>
+          <h5 className="text1 mt-5 mb-3">Bookmarked Town Analysis</h5>
           <div className="border p-3 rounded">
             <Row className="g-2">
               <Col className="d-flex flex-column gap-2">
                 <h5 className="colorTitle">Median, Mean Price</h5>
                 <div className="d-flex flex-column flex-fill shadow border-primary p-3 bg-white rounded townAggText">
-                  <TownAgg
-                    townFilter={townFilter}
-                    meanPrice={meanPrice}
-                    medianPrice={medianPrice}
-                    unitCount={unitCount}
+                  <BookmarkAgg
+                    meanPriceBookmark={meanPriceBookmark}
+                    medianPriceBookmark={medianPriceBookmark}
+                    unitCountBookmark={unitCountBookmark}
                     loading={loading}
+                    selectedBookmarkTown={selectedBookmarkTown}
+                    selectedBookmarkFlatType={selectedBookmarkFlatType}
                   />
                 </div>
               </Col>
@@ -453,10 +583,12 @@ function Town() {
               <Col className="d-flex flex-column gap-2">
                 <h5 className="colorTitle">Lowest vs Highest Price</h5>
                 <div className="d-flex flex-column flex-fill shadow border-primary p-3 bg-white rounded townAggText">
-                  <TownHighLowPrice
-                    lowestPrice={lowestPrice}
-                    highestPrice={highestPrice}
+                  <BookmarkHighLowPrice
+                    lowestPriceBookmark={lowestPriceBookmark}
+                    highestPriceBookmark={highestPriceBookmark}
                     loading={loading}
+                    selectedBookmarkTown={selectedBookmarkTown}
+                    selectedBookmarkFlatType={selectedBookmarkFlatType}
                   />
                 </div>
               </Col>

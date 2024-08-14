@@ -75,9 +75,9 @@ export const deleteAllRecords = async () => {
   }
 };
 
-//* For Favourites
+//* For Bookmarks
 
-export const addFavourites = async () => {
+export const addBookmarks = async () => {
   const url = "https://api.airtable.com/v0/appFKfNxO9GBOaz7B/Table%201";
 
   try {
@@ -114,7 +114,7 @@ export const addFavourites = async () => {
     console.error("Error:", error.message);
   }
 };
-export const fetchFavouriteTowns = async () => {
+export const fetchBookmarkedTowns = async () => {
   const url = "https://api.airtable.com/v0/appFKfNxO9GBOaz7B/Table%201";
 
   try {
@@ -138,10 +138,10 @@ export const fetchFavouriteTowns = async () => {
   }
 };
 
-export const deleteAllFavourites = async () => {
+export const deleteAllBookmarks = async () => {
   try {
     const url = "https://api.airtable.com/v0/appFKfNxO9GBOaz7B/Table%201";
-    const existingData = await fetchFavouriteTowns();
+    const existingData = await fetchBookmarkedTowns();
     for (const record of existingData) {
       const response = await fetch(`${url}/${record.id}`, {
         method: "DELETE",
