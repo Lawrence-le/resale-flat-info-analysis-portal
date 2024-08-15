@@ -2,7 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Chart } from "react-google-charts";
 import { Row, Col } from "react-bootstrap";
 import { useEffect, useState } from "react";
-import { chartHomeUnitsOptions } from "./ChartOptions";
+import { chartHomeUnitsOptions } from "./ChartHomeUnitsOptions";
 import BasicExample from "./Spinner";
 import { getHdbFilteredPreviousMonth } from "../services/Api";
 
@@ -24,7 +24,7 @@ export function ChartHomeUnits({ getPreviousMonth }) {
         ).toLocaleString("default", { month: "short", year: "numeric" });
         setChartTitle(`No. of units transacted by Towns (${formattedMonth})`);
       } catch (error) {
-        console.error("Error fetching data:", error.message);
+        console.error(error.message);
       } finally {
         setLoading(false);
       }

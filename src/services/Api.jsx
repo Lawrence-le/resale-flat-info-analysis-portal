@@ -19,8 +19,6 @@
 //   }
 // }
 
-//Api.jsx
-
 export async function getHdb(getYear) {
   // console.log("getHDB YEAR: ", getYear);
   const datasetId = "d_8b84c4ee58e3cfc0ece0d773c8ca6abc";
@@ -43,7 +41,6 @@ export async function getHdb(getYear) {
   }
 }
 
-//Api.jsx
 export async function getHdbFilteredPreviousMonth(previousMonthString) {
   const datasetId = "d_8b84c4ee58e3cfc0ece0d773c8ca6abc";
   const url = `https://data.gov.sg/api/action/datastore_search?resource_id=${datasetId}&sort=month desc&q={"month":"${previousMonthString}"}&limit=12000`;
@@ -66,7 +63,6 @@ export async function getHdbFilteredPreviousMonth(previousMonthString) {
   }
 }
 
-//Api.jsx
 export async function getHdbFilteredTown(getTown, getFlatType, getYear) {
   const datasetId = "d_8b84c4ee58e3cfc0ece0d773c8ca6abc";
   // console.log("getHdbFilteredTown Town: ", getTown);

@@ -21,10 +21,10 @@ const BookmarkAgg = ({
       ) : (
         <div>
           <p>
-            <strong>Town:</strong> {selectedBookmarkTown}
+            <strong>{selectedBookmarkTown}</strong>
           </p>
           <p className="mb-3">
-            <strong>Flat Type:</strong> {selectedBookmarkFlatType}
+            <strong>{selectedBookmarkFlatType}</strong>
           </p>
 
           <h5 className="price-subtitle">Median Resale Price</h5>
@@ -35,9 +35,8 @@ const BookmarkAgg = ({
           <h5 className="price-detail mb-3">
             ${meanPriceBookmark.toLocaleString()}
           </h5>
-          <p className="mb-3">
-            <strong>No. of Units:</strong> {unitCountBookmark}
-          </p>
+          <h5 className="price-subtitle mb-1">No. of Units:</h5>
+          <p className="numberOf mb-2">{unitCountBookmark}</p>
         </div>
       )}
     </div>

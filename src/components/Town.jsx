@@ -8,6 +8,7 @@ import {
   addBookmarks,
   fetchBookmarkedTowns,
   deleteAllBookmarks,
+  deleteBookmark,
 } from "../services/AirTable";
 import { useEffect, useState } from "react";
 import TownAgg from "./TownAgg";
@@ -79,7 +80,6 @@ function Town() {
 
   //* Filter and Output Statistics
 
-  //Town.jsx
   useEffect(() => {
     const fetchAndCalculate = async () => {
       if (townFilter.length > 0) {
@@ -197,14 +197,15 @@ function Town() {
     }
   };
   //! For Bookmarks
+
   useEffect(() => {
     const loadFavoriteTowns = async () => {
       try {
         const fetchedBookmarks = await fetchBookmarkedTowns();
-        console.log("Fetched Bookmarks:", fetchedBookmarks); // Debugging: Log fetched bookmarks
+        // console.log("Fetched Bookmarks:", fetchedBookmarks);
         setBookmarks(fetchedBookmarks); //? Set Bookmarks with data fetched.
       } catch (error) {
-        console.error("Error fetching favorite towns:", error.message);
+        console.error(error.message);
       }
     };
 
@@ -288,23 +289,50 @@ function Town() {
         alert("Bookmark added successfully!");
       }
     } catch (error) {
-      console.error("Error adding Bookmark:", error.message);
+      console.error(error.message);
     }
   };
 
-  const handleEditBookmarks = async (e) => {
-    e.preventDefault();
+  // const handleAddBookmarks = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const existingBookmarks = await fetchBookmarkedTowns();
 
-    alert("Please select a bookmark.");
-  };
+  //     const isBookmark = existingBookmarks.find(
+  //       (fav) =>
+  //         fav.town === townFilter[0]?.town &&
+  //         fav.flatType === townFilter[0]?.flatType
+  //     );
+
+  //     if (isBookmark) {
+  //       alert("This town and flat type is already in your Bookmarks.");
+  //       return;
+  //     }
+
+  //     const result = await addBookmarks();
+  //     if (result) {
+  //       const updatedBookmarks = await fetchBookmarkedTowns();
+
+  //       const sortedBookmarks = updatedBookmarks.sort((a, b) => {
+  //         return b.town.localeCompare(a.town); // Assuming IDs are strings
+  //       });
+
+  //       setBookmarks(sortedBookmarks);
+
+  //       alert("Bookmark added successfully!");
+  //     }
+  //   } catch (error) {
+  //     console.error(error.message);
+  //   }
+  // };
 
   const handleBookmarkSubmit = (e) => {
     e.preventDefault();
 
-    console.log("Form Submitted");
-    console.log("Selected Bookmark ID:", selectedBookmarkId);
-    console.log("Selected Town:", selectedBookmarkTown);
-    console.log("Selected Flat Type:", selectedBookmarkFlatType);
+    // console.log("Form Submitted");
+    // console.log("Selected Bookmark ID:", selectedBookmarkId);
+    // console.log("Selected Town:", selectedBookmarkTown);
+    // console.log("Selected Flat Type:", selectedBookmarkFlatType);
 
     if (!selectedBookmarkTown || !selectedBookmarkFlatType) {
       alert("Please select a valid bookmark.");
@@ -317,13 +345,12 @@ function Town() {
   };
 
   const handleBookmarkChange = (e) => {
+    e.preventDefault();
     const selectedId = e.target.value; // Get the selected bookmark ID
     setSelectedBookmarkId(selectedId);
 
-    // Find the bookmark object with the selected ID
     const bookmark = bookmarks.find((b) => b.id === selectedId);
 
-    // Update states based on the found bookmark
     if (bookmark) {
       setSelectedBookmarkTown(bookmark.town);
       setSelectedBookmarkFlatType(bookmark.flatType);
@@ -333,31 +360,68 @@ function Town() {
     }
   };
 
-  const handleRemoveAllBookmarks = async () => {
-    //* https://phppot.com/javascript/javascript-confirm/
-    if (
-      window.confirm(
-        "Are you sure you want to remove all bookmarks?\nThis action cannot be undone."
-      )
-    ) {
-      // action confirmed
-      console.log("Ok is clicked.");
+  const handleRemoveAllBookmarks = async (e) => {
+    e.preventDefault();
 
-      try {
-        const result = await deleteAllBookmarks();
-        if (!result) {
-          const updatedBookmarks = await fetchBookmarkedTowns();
-          if (updatedBookmarks.length === 0) {
-            setBookmarks(updatedBookmarks);
-            alert("All bookmarks removed successfully!");
-          }
-        }
-      } catch (error) {
-        console.error("Error removing all bookmarks:", error.message);
+    try {
+      const existingBookmarks = await fetchBookmarkedTowns();
+      if (existingBookmarks.length === 0) {
+        alert("No bookmarks to remove.");
+        return;
       }
-    } else {
-      // action cancelled
-      console.log("Cancel is clicked.");
+
+      if (
+        window.confirm(
+          "Are you sure you want to remove all bookmarks?\nThis action cannot be undone."
+        )
+      ) {
+        setLoading(true);
+        console.log("OK.");
+
+        await deleteAllBookmarks();
+
+        const updatedBookmarks = await fetchBookmarkedTowns();
+
+        setBookmarks(updatedBookmarks);
+        setSelectedBookmarkId("");
+        setSelectedBookmarkTown("");
+        setSelectedBookmarkFlatType("");
+
+        alert("All bookmarks removed successfully!");
+      } else {
+        console.log("Cancel is clicked.");
+      }
+    } catch (error) {
+      console.error(error.message);
+    } finally {
+      setLoading(false); // End loading
+    }
+  };
+
+  const handleRemoveBookmark = async (e) => {
+    e.preventDefault();
+
+    try {
+      // Attempt to delete the bookmark
+      await deleteBookmark(selectedBookmarkId);
+
+      // Fetch the updated list of bookmarks
+      const updatedBookmarks = await fetchBookmarkedTowns();
+      setBookmarks(updatedBookmarks);
+      setSelectedBookmarkId("");
+      setSelectedBookmarkTown("");
+      setSelectedBookmarkFlatType("");
+
+      // Check if there are no bookmarks left
+      if (updatedBookmarks.length === 0) {
+        setSelectedBookmarkId("");
+        setSelectedBookmarkTown("");
+        setSelectedBookmarkFlatType("");
+      }
+
+      alert("Bookmark removed successfully!");
+    } catch (error) {
+      console.error(error.message);
     }
   };
 
@@ -493,7 +557,7 @@ function Town() {
               )}
             </Form.Group>
 
-            <Button
+            {/* <Button
               variant="primary"
               size="sm"
               type="submit"
@@ -502,16 +566,17 @@ function Town() {
               // onClick={handleBookmarkChange}
             >
               Submit
-            </Button>
+            </Button> */}
 
             <Button
-              variant="primary"
+              variant="danger"
               size="sm"
-              className="mt-2"
+              className="mt-2 ms-2"
               style={{ fontSize: ".9em" }}
-              onClick={handleEditBookmarks}
+              onClick={handleRemoveBookmark}
+              disabled={!selectedBookmarkId} // Disable button if no bookmark is selected
             >
-              Edit
+              Remove
             </Button>
 
             <Button
@@ -521,8 +586,23 @@ function Town() {
               style={{ fontSize: ".9em" }}
               onClick={handleRemoveAllBookmarks}
             >
+              {" "}
               Remove All Bookmarks
             </Button>
+            {loading && (
+              <Form.Text
+                className="mt-2 ms-2"
+                style={{
+                  display: "inline-block",
+                  marginLeft: "10px",
+                  fontSize: "1.1em",
+                  verticalAlign: "middle",
+                  fontWeight: "bold",
+                }}
+              >
+                Loading...
+              </Form.Text>
+            )}
           </Form>
         </Col>
       </Row>
@@ -533,7 +613,7 @@ function Town() {
           <div className="border p-3 rounded">
             <Row className="g-2">
               <Col className="d-flex flex-column gap-2">
-                <h5 className="colorTitle">Median, Mean Price</h5>
+                <h5 className="colorTitle">Median | Mean Price</h5>
                 <div className="d-flex flex-column flex-fill shadow border-primary p-3 bg-white rounded townAggText">
                   <TownAgg
                     townFilter={townFilter}
@@ -547,7 +627,7 @@ function Town() {
             </Row>
             <Row className="g-2 mt-3">
               <Col className="d-flex flex-column gap-2">
-                <h5 className="colorTitle">Lowest vs Highest Price</h5>
+                <h5 className="colorTitle">Lowest | Highest Price</h5>
                 <div className="d-flex flex-column flex-fill shadow border-primary p-3 bg-white rounded townAggText">
                   <TownHighLowPrice
                     townFilter={townFilter}
@@ -566,7 +646,7 @@ function Town() {
           <div className="border p-3 rounded">
             <Row className="g-2">
               <Col className="d-flex flex-column gap-2">
-                <h5 className="colorTitle">Median, Mean Price</h5>
+                <h5 className="colorTitle">Median | Mean Price</h5>
                 <div className="d-flex flex-column flex-fill shadow border-primary p-3 bg-white rounded townAggText">
                   <BookmarkAgg
                     meanPriceBookmark={meanPriceBookmark}
@@ -581,7 +661,7 @@ function Town() {
             </Row>
             <Row className="g-2 mt-3">
               <Col className="d-flex flex-column gap-2">
-                <h5 className="colorTitle">Lowest vs Highest Price</h5>
+                <h5 className="colorTitle">Lowest | Highest Price</h5>
                 <div className="d-flex flex-column flex-fill shadow border-primary p-3 bg-white rounded townAggText">
                   <BookmarkHighLowPrice
                     lowestPriceBookmark={lowestPriceBookmark}

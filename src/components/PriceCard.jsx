@@ -1,4 +1,4 @@
-import { format, parse } from "date-fns";
+import { format } from "date-fns";
 
 const PriceCard = ({ data }) => {
   return (
@@ -9,15 +9,15 @@ const PriceCard = ({ data }) => {
         </h5>
 
         <p>
-          <strong>Month:</strong>{" "}
-          {format(new Date(data.month + "-01"), "MMM yyyy")}
-        </p>
-        <p>
-          <strong>Town:</strong> {data.town}
+          <strong>{data.town}</strong>
         </p>
 
         <p className="paraSpace">
-          <strong>Flat Type:</strong> {data.flat_type}
+          <strong>{data.flat_type}</strong>
+        </p>
+
+        <p className="paraSpace">
+          <strong> {format(new Date(data.month + "-01"), "MMM yyyy")}</strong>{" "}
         </p>
         <p>
           <strong>Block:</strong> {data.block}

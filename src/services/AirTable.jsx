@@ -27,7 +27,7 @@ export const addSelection = async (townKey, flatTypeKey) => {
     const result = { id: json.id, ...json.fields };
     return result;
   } catch (error) {
-    console.error("Error:", error.message);
+    console.error(error.message);
   }
 };
 
@@ -71,14 +71,15 @@ export const deleteAllRecords = async () => {
       }
     }
   } catch (error) {
-    console.error("Error deleting records:", error.message);
+    console.error(error.message);
   }
 };
 
 //* For Bookmarks
 
 export const addBookmarks = async () => {
-  const url = "https://api.airtable.com/v0/appFKfNxO9GBOaz7B/Table%201";
+  const url =
+    "https://api.airtable.com/v0/appFKfNxO9GBOaz7B/Table%201?view=Grid%20view";
 
   try {
     const existingData = await fetchExistingData();
@@ -95,7 +96,7 @@ export const addBookmarks = async () => {
       },
     };
 
-    console.log("Mapped Payload:", payload);
+    // console.log("Mapped Payload:", payload);
 
     const response = await fetch(url, {
       method: "POST",
@@ -111,12 +112,13 @@ export const addBookmarks = async () => {
     const result = { id: json.id, ...json.fields };
     return result;
   } catch (error) {
-    console.error("Error:", error.message);
+    console.error(error.message);
   }
 };
 export const fetchBookmarkedTowns = async () => {
-  const url = "https://api.airtable.com/v0/appFKfNxO9GBOaz7B/Table%201";
-
+  // const url = "https://api.airtable.com/v0/appFKfNxO9GBOaz7B/Table%201";
+  const url =
+    "https://api.airtable.com/v0/appFKfNxO9GBOaz7B/Table%201?view=Grid%20view";
   try {
     const response = await fetch(url, {
       method: "GET",
@@ -133,7 +135,7 @@ export const fetchBookmarkedTowns = async () => {
       ...record.fields,
     }));
   } catch (error) {
-    console.error("Error fetching favorite towns:", error.message);
+    console.error(error.message);
     return [];
   }
 };
@@ -142,16 +144,41 @@ export const deleteAllBookmarks = async () => {
   try {
     const url = "https://api.airtable.com/v0/appFKfNxO9GBOaz7B/Table%201";
     const existingData = await fetchBookmarkedTowns();
-    for (const record of existingData) {
+
+    for (let i = 0; i < existingData.length; i++) {
+      const record = existingData[i];
       const response = await fetch(`${url}/${record.id}`, {
         method: "DELETE",
         headers,
       });
+
       if (!response.ok) {
-        throw new Error(`Failed to delete record with ID ${record.id}`);
+        throw new Error(
+          `Failed to delete record with ID ${record.id}. Status: ${response.status}`
+        );
       }
     }
   } catch (error) {
     console.error("Error deleting records:", error.message);
+  }
+};
+
+export const deleteBookmark = async (selectedBookmarkId) => {
+  try {
+    const url = "https://api.airtable.com/v0/appFKfNxO9GBOaz7B/Table%201";
+
+    const response = await fetch(`${url}/${selectedBookmarkId}`, {
+      method: "DELETE",
+      headers,
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to delete record with ID ${selectedBookmarkId}`);
+    }
+
+    return true;
+  } catch (error) {
+    console.error(error.message);
+    return false;
   }
 };

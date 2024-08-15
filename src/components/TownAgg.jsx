@@ -21,10 +21,10 @@ const TownAgg = ({
         townFilter.map((filter, index) => (
           <div key={index}>
             <p>
-              <strong>Town:</strong> {filter.town}
+              <strong>{filter.town}</strong>
             </p>
             <p className="mb-3">
-              <strong>Flat Type:</strong> {filter.flatType}
+              <strong>{filter.flatType}</strong>
             </p>
 
             <h5 className="price-subtitle">Median Resale Price</h5>
@@ -33,9 +33,9 @@ const TownAgg = ({
             </h5>
             <h5 className="price-subtitle">Mean Resale Price</h5>
             <h5 className="price-detail mb-3">${meanPrice.toLocaleString()}</h5>
-            <p className="mb-3">
-              <strong>No. of Units:</strong> {unitCount}
-            </p>
+
+            <h5 className="price-subtitle mb-1">No. of Units:</h5>
+            <p className="numberOf mb-2">{unitCount}</p>
           </div>
         ))
       )}
