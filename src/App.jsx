@@ -125,8 +125,8 @@ function App() {
             </div>
           }
         />
-        <Route path="/town" element={<Town />} />
-        <Route path="/islandwide" element={<IslandWide />} />
+        <Route path="/Town" element={<Town />} />
+        <Route path="/Islandwide" element={<IslandWide />} />
       </Routes>
 
       <footer className="footer">

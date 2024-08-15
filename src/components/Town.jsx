@@ -292,47 +292,8 @@ function Town() {
       console.error(error.message);
     }
   };
-
-  // const handleAddBookmarks = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const existingBookmarks = await fetchBookmarkedTowns();
-
-  //     const isBookmark = existingBookmarks.find(
-  //       (fav) =>
-  //         fav.town === townFilter[0]?.town &&
-  //         fav.flatType === townFilter[0]?.flatType
-  //     );
-
-  //     if (isBookmark) {
-  //       alert("This town and flat type is already in your Bookmarks.");
-  //       return;
-  //     }
-
-  //     const result = await addBookmarks();
-  //     if (result) {
-  //       const updatedBookmarks = await fetchBookmarkedTowns();
-
-  //       const sortedBookmarks = updatedBookmarks.sort((a, b) => {
-  //         return b.town.localeCompare(a.town); // Assuming IDs are strings
-  //       });
-
-  //       setBookmarks(sortedBookmarks);
-
-  //       alert("Bookmark added successfully!");
-  //     }
-  //   } catch (error) {
-  //     console.error(error.message);
-  //   }
-  // };
-
   const handleBookmarkSubmit = (e) => {
     e.preventDefault();
-
-    // console.log("Form Submitted");
-    // console.log("Selected Bookmark ID:", selectedBookmarkId);
-    // console.log("Selected Town:", selectedBookmarkTown);
-    // console.log("Selected Flat Type:", selectedBookmarkFlatType);
 
     if (!selectedBookmarkTown || !selectedBookmarkFlatType) {
       alert("Please select a valid bookmark.");
@@ -530,13 +491,8 @@ function Town() {
             <Form.Group controlId="Bookmark-select">
               {bookmarks.length > 0 ? (
                 <Form.Control
-                  // as="select"
-                  // value={selectedBookmark}
-                  // onChange={(e) => setSelectedBookmark(e.target.value)}
-                  // style={{ fontSize: ".9em" }}
-
                   as="select"
-                  value={selectedBookmarkId} // Value is now the selectedBookmarkId
+                  value={selectedBookmarkId}
                   onChange={handleBookmarkChange}
                   style={{ fontSize: ".9em" }}
                 >
@@ -554,24 +510,13 @@ function Town() {
               )}
             </Form.Group>
 
-            {/* <Button
-              variant="secondary"
-              size="sm"
-              type="submit"
-              className="mt-2 me-2"
-              style={{ fontSize: ".9em" }}
-              // onClick={handleBookmarkChange}
-            >
-              Submit
-            </Button> */}
-
             <Button
               variant="warning"
               size="sm"
               className="mt-2 ms-2"
               style={{ fontSize: ".9em" }}
               onClick={handleRemoveBookmark}
-              disabled={!selectedBookmarkId} // Disable button if no bookmark is selected
+              disabled={!selectedBookmarkId}
             >
               Remove
             </Button>
