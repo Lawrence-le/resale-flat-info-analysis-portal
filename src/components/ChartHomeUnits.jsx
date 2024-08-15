@@ -16,7 +16,7 @@ export function ChartHomeUnits({ getPreviousMonth }) {
       try {
         const previousMonthString = getPreviousMonth();
         const records = await getHdbFilteredPreviousMonth(previousMonthString);
-        console.log(`Total Records: ${records.length}`);
+        // console.log(`Total Records: ${records.length}`);
         setData(records);
 
         const formattedMonth = new Date(

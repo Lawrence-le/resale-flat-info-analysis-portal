@@ -12,6 +12,7 @@ import DashboardSection from "./components/DashboardSection";
 import { getHdbFilteredPreviousMonth } from "./services/Api";
 import { useEffect, useState } from "react";
 import { parse, format } from "date-fns";
+import bgImage from "./assets/bg1.jpg";
 
 function App() {
   const [data, setData] = useState([]);
@@ -51,21 +52,55 @@ function App() {
       <Container className="mb-4">
         <NaviBar />
       </Container>
-      <Container className="main-content">
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <Container>
+
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <div>
+              <div className="image-dashboard-container">
+                <img
+                  src={bgImage}
+                  alt="Background"
+                  className="background-image"
+                />
+                <div className="dashboard-section-container">
+                  <DashboardSection
+                    totalRecords={data.length}
+                    displayMonth={formattedMonth}
+                  />
+                </div>
+                <div className="caption-container">
+                  <h1
+                    className="caption-text"
+                    style={{
+                      fontSize: "4rem",
+                      color: "#8e44ad",
+                    }}
+                  >
+                    Re.Flat
+                  </h1>
+                  <h2 className="caption-text" style={{ fontSize: "1.5rem" }}>
+                    Resale Flat Information and Analysis Portal
+                  </h2>
+                </div>
+              </div>
+
+              <Container className="other-content-container">
+                <div className="d-flex flex-column align-items-center">
+                  <h2
+                    className="align-items-center"
+                    style={{
+                      fontSize: "1.5rem",
+                      color: "#607d8b",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Previous Month Analysis
+                  </h2>
+                </div>
                 <Row className="g-2">
                   <Col className="d-flex flex-column gap-2">
-                    <div className="shadow border-primary p-3 bg-white rounded">
-                      <DashboardSection
-                        totalRecords={data.length}
-                        displayMonth={formattedMonth}
-                      />
-                    </div>
-
                     <div className="shadow border-primary p-3 bg-white rounded">
                       <HighestPriceMonth
                         data={data}
@@ -87,12 +122,13 @@ function App() {
                   </Col>
                 </Row>
               </Container>
-            }
-          />
-          <Route path="/Town" element={<Town />} />
-          <Route path="/IslandWide" element={<IslandWide />} />
-        </Routes>
-      </Container>
+            </div>
+          }
+        />
+        <Route path="/town" element={<Town />} />
+        <Route path="/islandwide" element={<IslandWide />} />
+      </Routes>
+
       <footer className="footer">
         <Footer />
       </footer>

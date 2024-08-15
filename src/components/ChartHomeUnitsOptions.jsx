@@ -31,7 +31,7 @@ export const chartHomeUnitsOptions = {
     },
   },
   legend: { position: "none" },
-  colors: ["#0d6efd"],
+  colors: ["#607d8b"],
   animation: {
     startup: true,
     easing: "ease-in",

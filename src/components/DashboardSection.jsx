@@ -8,7 +8,7 @@ function DashboardSection({ totalRecords, displayMonth, loading }) {
   return (
     <Row className="justify-content-center text-center mb-4">
       <Col>
-        <div className="dashboard-section p-3 bg-light border rounded">
+        <div className="p-3 transparent-bg rounded">
           {showSpinner ? (
             <div className="d-flex justify-content-center align-items-center">
               <VariantsExample animation="border" role="status">
@@ -16,20 +16,25 @@ function DashboardSection({ totalRecords, displayMonth, loading }) {
               </VariantsExample>
             </div>
           ) : (
-            <>
-              <p>
-                <strong>Total Records:</strong>
-              </p>
-              <h1
-                className="mt-3"
-                style={{ color: "#0d6efd", fontWeight: "bold" }}
-              >
-                {totalRecords}
-              </h1>
-              <p>
-                <strong>Period:</strong> {displayMonth}
-              </p>
-            </>
+            <div className="d-flex flex-column align-items-center">
+              <div className="d-flex flex-column align-items-center mb-1">
+                <h6
+                  className="mb-0"
+                  style={{ fontWeight: "200", color: "white" }}
+                >
+                  Total No. of Transactions Last Month
+                </h6>
+                <h6
+                  className="mb-3"
+                  style={{ fontWeight: "200", color: "white" }}
+                >
+                  {displayMonth}
+                </h6>
+                <h1 className="mb-1" style={{ color: "white" }}>
+                  <strong>{totalRecords}</strong>
+                </h1>
+              </div>
+            </div>
           )}
         </div>
       </Col>

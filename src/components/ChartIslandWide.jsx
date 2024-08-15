@@ -15,6 +15,7 @@ const ChartIslandWide = ({ chart1Selection, chart2Selection }) => {
   const [loading, setLoading] = useState(true);
   const [maxMonth, setMaxMonth] = useState("");
   const [minMonth, setMinMonth] = useState("");
+  const [totalCount, setTotalCount] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,9 +30,11 @@ const ChartIslandWide = ({ chart1Selection, chart2Selection }) => {
 
         const getMinMonth = sortedMonths[0];
         const getMaxMonth = sortedMonths[sortedMonths.length - 1];
+        const getCount = data.length;
 
         setMinMonth(getMinMonth);
         setMaxMonth(getMaxMonth);
+        setTotalCount(getCount);
 
         const formatTooltip = (item) => `
       Resale Price: ${item.resale_price} SGD
@@ -98,7 +101,7 @@ const ChartIslandWide = ({ chart1Selection, chart2Selection }) => {
               },
             },
             legend: { position: "none" },
-            colors: ["#0d6efd"],
+            colors: ["#607d8b"],
             animation: {
               startup: true,
               easing: "ease-in",
@@ -122,10 +125,12 @@ const ChartIslandWide = ({ chart1Selection, chart2Selection }) => {
             { role: "tooltip", type: "string", p: { html: true } },
           ]);
           const scatterOptions = {
+            chartArea: { left: 200, top: 40, bottom: 80 },
             title: "Resale Price vs Floor Area (sqm)",
             hAxis: { title: "Floor Area (sqm)" },
             vAxis: { title: "Resale Price (SGD)" },
             legend: "none",
+            colors: ["#607d8b"],
           };
 
           setScatterChartData(scatterData);
@@ -147,6 +152,7 @@ const ChartIslandWide = ({ chart1Selection, chart2Selection }) => {
             hAxis: { title: "Remaining Lease (years)" },
             vAxis: { title: "Resale Price (SGD)" },
             legend: "none",
+            colors: ["#607d8b"],
           };
 
           setScatterChartData(scatterData);
@@ -170,13 +176,13 @@ const ChartIslandWide = ({ chart1Selection, chart2Selection }) => {
 
   return (
     <>
-      <h5 className="mb-3 colorTitle">
+      <h5 className="mb-3 colorSubTitle d-flex flex-column align-items-center">
         {minMonth
           ? ` (${format(new Date(minMonth + "-01"), "MMM yyyy")} to `
           : ""}
-        {maxMonth ? `${format(new Date(maxMonth + "-01"), "MMM yyyy")})` : ""}
-      </h5>
-
+        {maxMonth ? `${format(new Date(maxMonth + "-01"), "MMM yyyy")})` : ""}{" "}
+      </h5>{" "}
+      <div className="text1">Total Count: {totalCount}</div>
       {chart1Selection === "11" ? (
         <BarChartOption data={barChartData} options={barChartOptions} />
       ) : chart2Selection ? (

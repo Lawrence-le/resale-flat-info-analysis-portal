@@ -424,7 +424,7 @@ function Town() {
 
   return (
     <Container className="mb-4 custom-font-size-town">
-      <h5 className="mb-3 colorTitle">
+      <h5 className="mb-4 colorTitle">
         Town Analysis
         {minMonth
           ? ` (${format(new Date(minMonth + "-01"), "MMM yyyy")} to `
@@ -474,7 +474,7 @@ function Town() {
               </Form.Control>
             </Form.Group>
             <Button
-              variant="primary"
+              variant="secondary"
               size="sm"
               type="submit"
               className="mt-2"
@@ -504,7 +504,7 @@ function Town() {
               )}
             </ListGroup>
             <Button
-              variant="primary"
+              variant="secondary"
               size="sm"
               className="mt-2 me-2"
               onClick={handleClear}
@@ -513,7 +513,7 @@ function Town() {
               Clear Filter
             </Button>
             <Button
-              variant="primary"
+              variant="secondary"
               size="sm"
               className="mt-2"
               style={{ fontSize: ".9em" }}
@@ -555,7 +555,7 @@ function Town() {
             </Form.Group>
 
             {/* <Button
-              variant="primary"
+              variant="secondary"
               size="sm"
               type="submit"
               className="mt-2 me-2"
@@ -566,7 +566,7 @@ function Town() {
             </Button> */}
 
             <Button
-              variant="danger"
+              variant="warning"
               size="sm"
               className="mt-2 ms-2"
               style={{ fontSize: ".9em" }}
@@ -610,7 +610,7 @@ function Town() {
           <div className="border p-3 rounded">
             <Row className="g-2">
               <Col className="d-flex flex-column gap-2">
-                <h5 className="colorTitle">Median | Mean Price</h5>
+                <h5 className="colorSubTitle">Median | Mean Price</h5>
                 <div className="d-flex flex-column flex-fill shadow border-primary p-3 bg-white rounded townAggText">
                   <TownAgg
                     townFilter={townFilter}
@@ -624,7 +624,7 @@ function Town() {
             </Row>
             <Row className="g-2 mt-3">
               <Col className="d-flex flex-column gap-2">
-                <h5 className="colorTitle">Lowest | Highest Price</h5>
+                <h5 className="colorSubTitle">Lowest | Highest Price</h5>
                 <div className="d-flex flex-column flex-fill shadow border-primary p-3 bg-white rounded townAggText">
                   <TownHighLowPrice
                     townFilter={townFilter}
@@ -643,7 +643,7 @@ function Town() {
           <div className="border p-3 rounded">
             <Row className="g-2">
               <Col className="d-flex flex-column gap-2">
-                <h5 className="colorTitle">Median | Mean Price</h5>
+                <h5 className="colorSubTitle">Median | Mean Price</h5>
                 <div className="d-flex flex-column flex-fill shadow border-primary p-3 bg-white rounded townAggText">
                   <BookmarkAgg
                     meanPriceBookmark={meanPriceBookmark}
@@ -658,7 +658,7 @@ function Town() {
             </Row>
             <Row className="g-2 mt-3">
               <Col className="d-flex flex-column gap-2">
-                <h5 className="colorTitle">Lowest | Highest Price</h5>
+                <h5 className="colorSubTitle">Lowest | Highest Price</h5>
                 <div className="d-flex flex-column flex-fill shadow border-primary p-3 bg-white rounded townAggText">
                   <BookmarkHighLowPrice
                     lowestPriceBookmark={lowestPriceBookmark}

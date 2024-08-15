@@ -14,15 +14,14 @@ const Footer = () => {
 
         <Row>
           <Col>
-            <p className="mt-2">
-              All HDB data are property of{" "}
+            <p className="mt-2 mb-3">
+              All HDB data is provided by{" "}
               <a
                 href="https://beta.data.gov.sg/collections/189/datasets/d_8b84c4ee58e3cfc0ece0d773c8ca6abc/view"
                 target="_blank"
-                rel="noopener noreferrer"
                 className="no-decoration"
               >
-                https://beta.data.gov.sg/
+                data.gov.sg
               </a>
             </p>
           </Col>

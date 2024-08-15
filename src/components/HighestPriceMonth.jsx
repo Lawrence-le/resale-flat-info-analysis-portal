@@ -31,21 +31,19 @@ function HighestPriceMonth({ data, loading, formattedMonth }) {
     <Container>
       <Row className="justify-content-center text-center mb-2">
         <Col>
-          <p className="hpCompTitle">
-            Previous Month's Highest Resale Price ({formattedMonth})
-          </p>
+          <p className="hpCompTitle">Highest Resale Price ({formattedMonth})</p>
           {highestTransaction && (
             <>
               <h2
                 className="mt-3"
-                style={{ color: "#0d6efd", fontWeight: "bold" }}
+                style={{ color: "#8e44ad", fontWeight: "bold" }}
               >
                 ${parseFloat(highestTransaction.resale_price).toLocaleString()}
               </h2>
               <Row className="mt-4">
                 <Col className="d-flex justify-content-center align-items-center">
                   <div>
-                    <h5 style={{ color: "#0d6efd" }}>
+                    <h5 style={{ color: "#8e44ad" }}>
                       <strong>{highestTransaction.town}</strong>
                     </h5>
                   </div>

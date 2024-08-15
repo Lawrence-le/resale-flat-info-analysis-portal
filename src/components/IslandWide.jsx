@@ -18,7 +18,7 @@ const Islandwide = () => {
   return (
     <>
       <Container className="mb-4 custom-font-size-town">
-        <h5 className="mb- colorTitle">Islandwide Analysis</h5>
+        <h5 className="mb-4 colorTitle">Islandwide Analysis</h5>
         <Row>
           <div className="border p-3 rounded">
             <Row className="g-2">
