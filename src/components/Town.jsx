@@ -394,7 +394,7 @@ function Town() {
     } catch (error) {
       console.error(error.message);
     } finally {
-      setLoading(false); // End loading
+      setLoading(false);
     }
   };
 
@@ -402,17 +402,14 @@ function Town() {
     e.preventDefault();
 
     try {
-      // Attempt to delete the bookmark
       await deleteBookmark(selectedBookmarkId);
 
-      // Fetch the updated list of bookmarks
       const updatedBookmarks = await fetchBookmarkedTowns();
       setBookmarks(updatedBookmarks);
       setSelectedBookmarkId("");
       setSelectedBookmarkTown("");
       setSelectedBookmarkFlatType("");
 
-      // Check if there are no bookmarks left
       if (updatedBookmarks.length === 0) {
         setSelectedBookmarkId("");
         setSelectedBookmarkTown("");
