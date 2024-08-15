@@ -27,7 +27,8 @@ export const addSelection = async (townKey, flatTypeKey) => {
     const result = { id: json.id, ...json.fields };
     return result;
   } catch (error) {
-    console.error(error.message);
+    console.error("Error in addSelection:", error.message);
+    return [];
   }
 };
 
@@ -52,7 +53,8 @@ export const fetchExistingData = async () => {
       };
     });
   } catch (error) {
-    console.error(error.message);
+    console.error("fetchExistingData:", error.message);
+    return [];
   }
 };
 
@@ -71,7 +73,8 @@ export const deleteAllRecords = async () => {
       }
     }
   } catch (error) {
-    console.error(error.message);
+    console.error("deleteAllRecords:", error.message);
+    return [];
   }
 };
 
@@ -112,7 +115,8 @@ export const addBookmarks = async () => {
     const result = { id: json.id, ...json.fields };
     return result;
   } catch (error) {
-    console.error(error.message);
+    console.error("addBookmarks:", error.message);
+    return [];
   }
 };
 export const fetchBookmarkedTowns = async () => {
@@ -160,6 +164,7 @@ export const deleteAllBookmarks = async () => {
     }
   } catch (error) {
     console.error("Error deleting records:", error.message);
+    return [];
   }
 };
 
@@ -179,6 +184,6 @@ export const deleteBookmark = async (selectedBookmarkId) => {
     return true;
   } catch (error) {
     console.error(error.message);
-    return false;
+    return [];
   }
 };

@@ -45,7 +45,7 @@ function App() {
     };
 
     fetchData();
-  }, []);
+  }, [previousMonthString]);
 
   return (
     <div className="app-container">
