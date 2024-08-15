@@ -1,11 +1,17 @@
 import { format } from "date-fns";
 
 const PriceCard = ({ data }) => {
+  if (!data) {
+    return <div>No data available</div>;
+  }
   return (
     <div>
       <div className="price-card">
         <h5 className="price-detail">
-          ${parseFloat(data.resale_price).toLocaleString()}
+          $
+          {data.resale_price
+            ? parseFloat(data.resale_price).toLocaleString()
+            : "N/A"}
         </h5>
 
         <p>

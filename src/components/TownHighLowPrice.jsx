@@ -7,8 +7,9 @@ const TownHighLowPrice = ({
   loading,
   townFilter,
 }) => {
-  // console.log("Value of Lowest Price: ", lowestPrice);
-  // console.log("Value of townFilter: ", townFilter.length);
+  console.log("Value of Lowest Price: ", lowestPrice);
+  console.log("Value of Highest Price: ", highestPrice);
+  console.log("Value of townFilter: ", townFilter.length);
   return (
     <div>
       {loading ? (
