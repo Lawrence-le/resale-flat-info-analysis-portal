@@ -18,7 +18,7 @@ function NaviBar() {
           <Nav.Link as={Link} to="/town">
             <strong>Town</strong>
           </Nav.Link>
-          <Nav.Link as={Link} to="/islandWide">
+          <Nav.Link as={Link} to="/islandwide">
             <strong>Island-wide</strong>
           </Nav.Link>
         </Nav>
