@@ -1,19 +1,15 @@
 import { Row, Col } from "react-bootstrap";
-import VariantsExample from "./Spinner"; // Ensure VariantsExample is a spinner component
 
 function DashboardSection({ totalRecords, displayMonth, loading }) {
-  // Show spinner if loading or if totalRecords is 0
-  const showSpinner = loading || totalRecords === 0;
+  const nowLoading = loading || totalRecords === 0;
 
   return (
     <Row className="justify-content-center text-center mb-4">
       <Col>
         <div className="p-3 transparent-bg rounded">
-          {showSpinner ? (
+          {nowLoading ? (
             <div className="d-flex justify-content-center align-items-center">
-              <VariantsExample animation="border" role="status">
-                <span className="visually-hidden">Loading...</span>
-              </VariantsExample>
+              <h6 style={{ color: "white" }}>Loading...</h6>
             </div>
           ) : (
             <div className="d-flex flex-column align-items-center">

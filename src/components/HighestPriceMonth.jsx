@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import VariantsExample from "./Spinner";
 
 function HighestPriceMonth({ data, loading, formattedMonth }) {
   const [highestTransaction, setHighestTransaction] = useState(null);
@@ -24,7 +23,7 @@ function HighestPriceMonth({ data, loading, formattedMonth }) {
   }, [data]);
 
   if (loading) {
-    return <VariantsExample />;
+    return <div>Loading...</div>;
   }
 
   return (

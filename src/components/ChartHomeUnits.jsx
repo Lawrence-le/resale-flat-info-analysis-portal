@@ -3,7 +3,6 @@ import { Chart } from "react-google-charts";
 import { Row, Col } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { chartHomeUnitsOptions } from "./ChartHomeUnitsOptions";
-import BasicExample from "./Spinner";
 import { getHdbFilteredPreviousMonth } from "../services/Api";
 
 export function ChartHomeUnits({ getPreviousMonth }) {
@@ -66,7 +65,7 @@ export function ChartHomeUnits({ getPreviousMonth }) {
   ];
 
   if (loading) {
-    return <BasicExample />;
+    return <div>Loading...</div>;
   }
 
   return (

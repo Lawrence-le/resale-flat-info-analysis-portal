@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { getHdb } from "../services/Api";
 import BarChartOption from "./ChartIslandWideBarOption";
 import ScatterChartOption from "./ChartIslandWideScatterOption";
-import BasicExample from "./Spinner";
 import { format } from "date-fns";
 
 const getYear = new Date().getFullYear();
@@ -171,7 +170,7 @@ const ChartIslandWide = ({ chart1Selection, chart2Selection }) => {
   }, [chart1Selection, chart2Selection]);
 
   if (loading) {
-    return <BasicExample />;
+    return <div>Loading...</div>;
   }
 
   return (
