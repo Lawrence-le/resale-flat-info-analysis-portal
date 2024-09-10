@@ -5,13 +5,14 @@
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "build"
+        "distDir": "dist"
       }
     }
   ],
   "routes": [
-    { "src": "/", "dest": "/" },
-    { "src": "/town", "dest": "/town" },
-    { "src": "/islandwide", "dest": "/islandwide" }
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
   ]
 }
