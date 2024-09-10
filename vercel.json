@@ -10,9 +10,8 @@
     }
   ],
   "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
+    { "src": "/", "dest": "/" },
+    { "src": "/town", "dest": "/" },
+    { "src": "/islandwide", "dest": "/" }
   ]
 }
