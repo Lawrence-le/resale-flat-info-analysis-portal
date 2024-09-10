@@ -11,7 +11,7 @@
   ],
   "routes": [
     { "src": "/", "dest": "/" },
-    { "src": "/town", "dest": "/" },
-    { "src": "/islandwide", "dest": "/" }
+    { "src": "/town", "dest": "/town" },
+    { "src": "/islandwide", "dest": "/islandwide" }
   ]
 }
