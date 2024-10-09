@@ -1,7 +1,6 @@
 # Re.FLAT
 
-![image](https://github.com/user-attachments/assets/2f45d0b5-4d19-4cd7-81b7-ebb855e26fe0)
-
+![image](https://github.com/user-attachments/assets/126081a9-f2bf-4bf6-9be2-43baea695765)
 
 ## Project Description
 
